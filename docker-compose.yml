@@ -4,6 +4,12 @@ networks:
   jib-jab-postgres:
     external: false
 
+volumes:
+  auth-pgdata:
+    external: true
+  post-pgdata:
+    external: true
+
 services:
   post-db:
     container_name: post-pg
@@ -12,6 +18,8 @@ services:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: jibber-jabber-post
+    volumes:
+      - post-db:/usr/app/data
     ports:
       - "5432:5432"
     networks:
@@ -25,6 +33,8 @@ services:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: jibber-jabber-auth
+    volumes:
+      - auth-db:/usr/app/data
     ports:
       - "5431:5431"
     networks:
