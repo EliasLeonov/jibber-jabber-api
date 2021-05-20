@@ -1,0 +1,43 @@
+version: "3.9"
+
+networks:
+  jib-jab-postgres:
+    external: false
+
+services:
+  post-db:
+    container_name: post-pg
+    image: postgres:12
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: jibber-jabber-post
+    ports:
+      - "5432:5432"
+    networks:
+      - jib-jab-postgres
+  auth-db:
+    container_name: auth-pg
+    image: postgres:12
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: jibber-jabber-auth
+    ports:
+      - "5431:5431"
+    networks:
+      - jib-jab-postgres
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    env_file:
+      - .env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: $PGADMIN_DEFAULT_EMAIL
+      PGADMIN_DEFAULT_PASSWORD: $PGADMIN_DEFAULT_PASSWORD
+    networks:
+      - jib-jab-postgres
+    ports:
+      - "5050:80"
