@@ -19,7 +19,7 @@ services:
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: jibber-jabber-post
     volumes:
-      - post-db:/usr/app/data
+      - post-pgdata:/usr/app/data
     ports:
       - "5432:5432"
     networks:
@@ -34,7 +34,7 @@ services:
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: jibber-jabber-auth
     volumes:
-      - auth-db:/usr/app/data
+      - auth-pgdata:/usr/app/data
     ports:
       - "5431:5431"
     networks:
