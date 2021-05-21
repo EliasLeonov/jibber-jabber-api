@@ -36,7 +36,7 @@ services:
     volumes:
       - auth-pgdata:/usr/app/data
     ports:
-      - "5431:5431"
+      - "5431:5432"
     networks:
       - jib-jab-postgres
   pgadmin:
