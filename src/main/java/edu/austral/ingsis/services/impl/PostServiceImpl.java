@@ -1,8 +1,8 @@
 package edu.austral.ingsis.services.impl;
 
-import edu.austral.ingsis.dto.post.CreatePostDto;
+import edu.austral.ingsis.domain.dto.post.CreatePostDto;
 import edu.austral.ingsis.domain.post.Post;
-import edu.austral.ingsis.dto.post.PostDto;
+import edu.austral.ingsis.domain.dto.post.PostDto;
 import edu.austral.ingsis.exceptions.NotFoundException;
 import edu.austral.ingsis.factories.PostFactory;
 import edu.austral.ingsis.repositories.PostRepository;
@@ -10,8 +10,6 @@ import edu.austral.ingsis.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,12 +27,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto save(CreatePostDto createPostDto) {
         return repository.save(PostFactory.create(createPostDto)).toDto();
-    }
-
-    @Override
-    public PostDto update(PostDto postDto) {
-        Post oldPost = repository.findById(postDto.getId()).orElseThrow(() -> new NotFoundException("Post does not found"));
-        return repository.save(PostFactory.update(postDto, oldPost)).toDto();
     }
 
     @Override

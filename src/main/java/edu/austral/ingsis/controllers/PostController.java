@@ -1,7 +1,7 @@
 package edu.austral.ingsis.controllers;
 
-import edu.austral.ingsis.dto.post.CreatePostDto;
-import edu.austral.ingsis.dto.post.PostDto;
+import edu.austral.ingsis.domain.dto.post.CreatePostDto;
+import edu.austral.ingsis.domain.dto.post.PostDto;
 import edu.austral.ingsis.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.Valid;
@@ -28,11 +28,6 @@ public class PostController {
     @PostMapping("/save")
     public PostDto save(@RequestBody @Valid CreatePostDto createPostDto){
         return service.save(createPostDto);
-    }
-
-    @PostMapping("/update")
-    public PostDto update(@RequestBody @Valid PostDto postDto){
-        return service.update(postDto);
     }
 
     @DeleteMapping("/delete/{id}")
