@@ -1,6 +1,6 @@
 package edu.austral.ingsis.domain.post;
 
-import edu.austral.ingsis.dto.post.PostDto;
+import edu.austral.ingsis.domain.dto.post.PostDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,12 +19,17 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
+    @Column(updatable = false)
+    private String username;
+
+    @Column(updatable = false)
     private String text;
 
     public PostDto toDto(){
         return PostDto
                 .builder()
                 .id(id)
+                .username(username)
                 .text(text)
                 .build();
     }
