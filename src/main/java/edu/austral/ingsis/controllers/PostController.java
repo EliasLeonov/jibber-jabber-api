@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/post")
@@ -21,7 +22,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public PostDto getById(@PathVariable @Valid String id){
+    public PostDto getById(@PathVariable @Valid Long id){
         return service.findById(id);
     }
 
@@ -31,12 +32,12 @@ public class PostController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable @Valid String id){
+    public void delete(@PathVariable @Valid Long id){
         service.delete(id);
     }
 
     @GetMapping("/get-all")
-    public List<PostDto> getAll(){
+    public Set<PostDto> getAll(){
         return service.getAll();
     }
 }

@@ -5,12 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class PostDto {
-    private String id;
+    private Long id;
     private String username;
     private String text;
+    private Date date;
+    private Long likes;
 }

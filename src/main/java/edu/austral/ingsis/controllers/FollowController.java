@@ -2,11 +2,13 @@ package edu.austral.ingsis.controllers;
 
 import edu.austral.ingsis.domain.dto.follow.CreateFollowDto;
 import edu.austral.ingsis.domain.dto.follow.FollowDto;
+import edu.austral.ingsis.domain.dto.follow.UserFollowData;
 import edu.austral.ingsis.services.FollowService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/follow")
@@ -23,17 +25,17 @@ public class FollowController {
     }
 
     @DeleteMapping("/unfollow/{id}")
-    public Boolean unfollow(@PathVariable(value = "id") @Valid String id){
+    public Boolean unfollow(@PathVariable(value = "id") @Valid Long id){
         return service.unfollow(id);
     }
 
     @GetMapping("/get-followers/{userId}")
-    public List<String> getFollowers(@PathVariable(value = "userId") @Valid String userId){
+    public Set<UserFollowData> getFollowers(@PathVariable(value = "userId") @Valid Long userId){
         return service.getFollowers(userId);
     }
 
     @GetMapping("/get-following/{userId}")
-    public List<String> getFollowing(@PathVariable(value = "userId") @Valid String userId){
+    public Set<UserFollowData> getFollowing(@PathVariable(value = "userId") @Valid Long userId){
         return service.getFollowing(userId);
     }
 }

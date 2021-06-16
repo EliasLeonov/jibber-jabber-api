@@ -17,13 +17,14 @@ import javax.persistence.*;
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    private String followingUserId;
-    private String followerUserId;
+    private Long id;
+    private Long followingUserId;
+    private Long followerUserId;
 
     public FollowDto toDto(){
         return FollowDto
                 .builder()
+                .id(id)
                 .followingUserId(followingUserId)
                 .followerUserId(followerUserId)
                 .build();

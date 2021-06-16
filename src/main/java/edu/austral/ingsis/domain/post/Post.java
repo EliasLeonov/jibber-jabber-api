@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.Date;
 
 @Entity
 @Table(name = "post")
@@ -13,17 +16,20 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post {
+public class Post implements Comparator<Post> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(updatable = false)
     private String username;
 
     @Column(updatable = false)
     private String text;
+
+    @Column(updatable = false)
+    private Date date;
 
     public PostDto toDto(){
         return PostDto
@@ -34,4 +40,8 @@ public class Post {
                 .build();
     }
 
+    @Override
+    public int compare(Post o1, Post o2) {
+        return o1.getDate().compareTo(o2.getDate());
+    }
 }

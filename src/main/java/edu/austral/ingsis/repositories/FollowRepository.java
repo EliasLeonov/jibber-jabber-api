@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FollowRepository extends JpaRepository<Follow, String> {
-    Boolean existsFollowByFollowerUserIdAndFollowingUserId(String followerUserId, String followUserId);
-    Boolean existsFollowByFollowerUserId(String followerUserId);
-    Boolean existsFollowByFollowingUserId(String followingUserId);
-    List<Follow> findAllByFollowingUserId(String followingId);
+public interface FollowRepository extends JpaRepository<Follow, Long> {
+    Boolean existsFollowByFollowerUserIdAndFollowingUserId(Long followerUserId, Long followUserId);
+    Boolean existsFollowByFollowerUserId(Long followerUserId);
+    Boolean existsFollowByFollowingUserId(Long followingUserId);
+    List<Follow> findAllByFollowingUserId(Long followingId);
 }
