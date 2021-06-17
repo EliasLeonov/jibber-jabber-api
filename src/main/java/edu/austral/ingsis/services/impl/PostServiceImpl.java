@@ -40,12 +40,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto save(CreatePostDto createPostDto) {
-        return repository.save(PostFactory.create(createPostDto)).toDto();
+        return repository.save(PostFactory.create(createPostDto, sessionUtils.getUserLogged())).toDto();
     }
 
     @Override
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         repository.deleteById(id);
+        return !repository.existsById(id);
     }
 
     @Override

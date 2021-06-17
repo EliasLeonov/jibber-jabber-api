@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface PostService {
     PostDto save(CreatePostDto createPostDto);
-    void delete(Long id);
+    boolean delete(Long id);
     PostDto findById(Long id);
     Set<PostDto> getAll();
     Set<PostDto> getFeed();

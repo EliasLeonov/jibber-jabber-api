@@ -22,6 +22,6 @@ public class SessionUtils {
         if (jwt == null) throw new NotFoundException("Error while getting session token");
 
         UserDetailsImpl user = (UserDetailsImpl) jwt.getPrincipal();
-        return this.userRepository.findByUsername(user.getUsername());
+        return this.userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new NotFoundException("User does not found"));
     }
 }

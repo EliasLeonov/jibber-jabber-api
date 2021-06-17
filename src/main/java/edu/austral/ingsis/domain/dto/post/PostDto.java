@@ -1,5 +1,6 @@
 package edu.austral.ingsis.domain.dto.post;
 
+import edu.austral.ingsis.domain.dto.user.JJUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +14,10 @@ import java.util.Date;
 @Builder
 public class PostDto {
     private Long id;
-    private String username;
+    private JJUserDto author;
     private String text;
-    private Date date;
+    private Date timestamp;
     private Long likes;
 }
+
+

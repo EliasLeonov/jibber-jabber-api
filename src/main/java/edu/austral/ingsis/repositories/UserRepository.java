@@ -4,7 +4,9 @@ import edu.austral.ingsis.domain.JJUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<JJUser, Long> {
-    JJUser findByUsername(String username);
+    Optional<JJUser> findByUsername(String username);
 }

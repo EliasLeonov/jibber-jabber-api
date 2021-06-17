@@ -1,6 +1,8 @@
 package edu.austral.ingsis.domain.post;
 
+import edu.austral.ingsis.domain.JJUser;
 import edu.austral.ingsis.domain.dto.post.PostDto;
+import edu.austral.ingsis.domain.dto.user.JJUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +25,8 @@ public class Post implements Comparator<Post> {
     private Long id;
 
     @Column(updatable = false)
-    private String username;
+    @ManyToOne
+    private JJUser owner;
 
     @Column(updatable = false)
     private String text;
@@ -35,7 +38,7 @@ public class Post implements Comparator<Post> {
         return PostDto
                 .builder()
                 .id(id)
-                .username(username)
+                .author(owner.toDto())
                 .text(text)
                 .build();
     }

@@ -32,12 +32,17 @@ public class PostController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable @Valid Long id){
-        service.delete(id);
+    public boolean delete(@PathVariable @Valid Long id){
+        return service.delete(id);
     }
 
     @GetMapping("/get-all")
     public Set<PostDto> getAll(){
         return service.getAll();
+    }
+
+    @GetMapping("/get-feed")
+    public Set<PostDto> getFeed(){
+        return service.getFeed();
     }
 }

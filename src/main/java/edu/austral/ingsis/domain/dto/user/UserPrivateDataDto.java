@@ -1,6 +1,7 @@
 package edu.austral.ingsis.domain.dto.user;
 
 import edu.austral.ingsis.domain.dto.follow.FollowDto;
+import edu.austral.ingsis.domain.dto.follow.UserFollowData;
 import edu.austral.ingsis.domain.dto.post.PostDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,6 @@ public class UserPrivateDataDto {
     private String lastname;
     private String mail;
     private Set<PostDto> posts;
-    private Set<FollowDto> followers;
-    private Set<FollowDto> following;
+    private Set<UserFollowData> followers;
+    private Set<UserFollowData> following;
 }

@@ -1,6 +1,7 @@
 package edu.austral.ingsis.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.austral.ingsis.domain.dto.user.JJUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -61,5 +62,15 @@ public class JJUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isAccountNonExpired();
+    }
+
+    public JJUserDto toDto(){
+        return JJUserDto.builder()
+                .id(id)
+                .username(username)
+                .name(name)
+                .lastname(lastname)
+                .mail(mail)
+                .build();
     }
 }
