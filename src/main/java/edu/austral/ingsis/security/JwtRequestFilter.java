@@ -1,6 +1,5 @@
 package edu.austral.ingsis.security;
 
-import edu.austral.ingsis.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +22,7 @@ import java.util.Optional;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UserService jwtUserDetailsService;
+    private UserDetailsServiceImpl jwtUserDetailsService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;

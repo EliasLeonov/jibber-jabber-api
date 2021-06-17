@@ -4,16 +4,16 @@ import edu.austral.ingsis.domain.dto.like.CreateLikeDto;
 import edu.austral.ingsis.domain.dto.like.LikeDto;
 import edu.austral.ingsis.domain.dto.post.PostDto;
 import edu.austral.ingsis.domain.follow.Like;
-import edu.austral.ingsis.domain.post.Post;
 import edu.austral.ingsis.exceptions.BadRequestException;
+import edu.austral.ingsis.exceptions.NotFoundException;
 import edu.austral.ingsis.factories.LikeFactory;
 import edu.austral.ingsis.repositories.LikeRepository;
+import edu.austral.ingsis.repositories.PostRepository;
 import edu.austral.ingsis.services.LikeService;
 import edu.austral.ingsis.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,12 +21,13 @@ import java.util.stream.Collectors;
 public class LikeServiceImpl implements LikeService {
 
     private final LikeRepository repository;
-    private final PostService postService;
+    private final PostRepository postRepository;
+
 
     @Autowired
-    public LikeServiceImpl(LikeRepository repository, PostService postService) {
+    public LikeServiceImpl(LikeRepository repository, PostRepository postRepository) {
         this.repository = repository;
-        this.postService = postService;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -56,7 +57,10 @@ public class LikeServiceImpl implements LikeService {
         return repository
                 .findAllByUserId(userId)
                 .stream()
-                .map(x -> postService.findById(x.getPostId()))
+                .map(x -> postRepository
+                        .findById(x.getPostId())
+                        .orElseThrow(() -> new NotFoundException("Post does not found"))
+                        .toDto())
                 .collect(Collectors.toSet());
     }
 

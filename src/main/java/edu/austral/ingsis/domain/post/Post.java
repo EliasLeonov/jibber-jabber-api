@@ -24,7 +24,6 @@ public class Post implements Comparator<Post> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(updatable = false)
     @ManyToOne
     private JJUser owner;
 

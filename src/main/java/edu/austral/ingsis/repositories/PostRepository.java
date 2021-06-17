@@ -9,5 +9,5 @@ import java.util.Set;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    public Set<Post> findAllByUsername(String username);
+    public Set<Post> findAllByOwner(String username);
 }

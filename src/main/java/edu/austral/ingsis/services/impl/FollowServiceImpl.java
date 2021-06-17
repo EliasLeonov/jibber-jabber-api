@@ -5,14 +5,15 @@ import edu.austral.ingsis.domain.dto.follow.FollowDto;
 import edu.austral.ingsis.domain.dto.follow.UserFollowData;
 import edu.austral.ingsis.domain.follow.Follow;
 import edu.austral.ingsis.exceptions.BadRequestException;
+import edu.austral.ingsis.exceptions.NotFoundException;
 import edu.austral.ingsis.factories.FollowFactory;
 import edu.austral.ingsis.repositories.FollowRepository;
+import edu.austral.ingsis.repositories.UserRepository;
 import edu.austral.ingsis.services.FollowService;
 import edu.austral.ingsis.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,12 @@ import java.util.stream.Collectors;
 public class FollowServiceImpl implements FollowService {
 
     private final FollowRepository repository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public FollowServiceImpl(FollowRepository repository, UserService userService) {
+    public FollowServiceImpl(FollowRepository repository, UserRepository userRepository) {
         this.repository = repository;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class FollowServiceImpl implements FollowService {
                 .stream()
                 .map(Follow::getFollowerUserId)
                 .map(x -> {
-                    var user =userService.getById(x);
+                    var user = userRepository.findById(x).orElseThrow(() -> new NotFoundException("User does not found"));
                     return UserFollowData.builder()
                             .firstname(user.getName())
                             .username(user.getUsername())
@@ -66,7 +67,7 @@ public class FollowServiceImpl implements FollowService {
                 .stream()
                 .map(Follow::getFollowingUserId)
                 .map(x -> {
-                    var user =userService.getById(x);
+                    var user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User does not found"));
                     return UserFollowData.builder()
                             .firstname(user.getName())
                             .username(user.getUsername())
