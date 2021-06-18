@@ -15,6 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class UserPublicDataDto {
+    private Long id;
     private String username;
     private String firstname;
     private Set<PostDto> posts;
