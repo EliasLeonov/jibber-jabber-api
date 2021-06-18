@@ -37,6 +37,7 @@ public class Post implements Comparator<Post> {
         return PostDto
                 .builder()
                 .id(id)
+                .timestamp(date)
                 .author(owner.toDto())
                 .text(text)
                 .build();

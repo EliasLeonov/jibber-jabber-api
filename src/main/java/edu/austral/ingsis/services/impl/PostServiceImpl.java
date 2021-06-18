@@ -87,6 +87,7 @@ public class PostServiceImpl implements PostService {
                         .findById(x)
                         .orElseThrow(() -> new NotFoundException("User does not found")))
                 .collect(Collectors.toList());
+        users.add(user); //add ourself
         return users
                 .stream()
                 .map(repository::findAllByOwner)
