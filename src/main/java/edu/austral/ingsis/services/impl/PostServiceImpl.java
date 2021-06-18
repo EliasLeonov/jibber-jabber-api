@@ -69,8 +69,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Set<PostDto> getAllByUser(String username){
+        JJUser user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User not found"));
         return repository
-                .findAllByOwner(username)
+                .findAllByOwner(user)
                 .stream()
                 .map(Post::toDto)
                 .collect(Collectors.toSet());
@@ -79,15 +80,14 @@ public class PostServiceImpl implements PostService {
     @Override
     public Set<PostDto> getFeed() {
         JJUser user = sessionUtils.getUserLogged();
-        Set<Long> userIds = followService.getFollowingIds(user.getId());
-        List<String> usernames = userIds
+        Set<Long> userIds = followService.getFollowingIds(user);
+        List<JJUser> users = userIds
                 .stream()
                 .map(x -> userRepository
                         .findById(x)
-                        .orElseThrow(() -> new NotFoundException("User does not found"))
-                        .getUsername())
+                        .orElseThrow(() -> new NotFoundException("User does not found")))
                 .collect(Collectors.toList());
-        return usernames
+        return users
                 .stream()
                 .map(repository::findAllByOwner)
                 .flatMap(Set::stream)

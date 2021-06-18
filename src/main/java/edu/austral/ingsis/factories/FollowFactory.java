@@ -1,5 +1,6 @@
 package edu.austral.ingsis.factories;
 
+import edu.austral.ingsis.domain.JJUser;
 import edu.austral.ingsis.domain.dto.follow.CreateFollowDto;
 import edu.austral.ingsis.domain.follow.Follow;
 import org.springframework.stereotype.Component;
@@ -7,11 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class FollowFactory {
 
-    public static Follow create(CreateFollowDto followDto){
+    public static Follow create(CreateFollowDto followDto, JJUser follower, JJUser following){
         return Follow
                 .builder()
-                .followingUserId(followDto.getFollowUserId())
-                .followerUserId(followDto.getFollowerUserId())
+                .followerUser(follower)
+                .followingUser(following)
                 .build();
     }
 }

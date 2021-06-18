@@ -32,28 +32,28 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         try {
-            Cookie jwt = parseJwt(request);
-            if (jwt == null) throw new RuntimeException();
+            String jwt = parseJwt(request);
+            if (jwt != null && jwtTokenUtil.validateToken(jwt)) {
+                String username = jwtTokenUtil.getUsernameFromToken(jwt);
 
-            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(jwt.getName());
-            if (jwtTokenUtil.validateToken(jwt.getValue(), userDetails)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e){
-            logger.error("Cannot set user authentication: {}", e);
+            logger.error("Cannot set user authentication: {}");
         }
         chain.doFilter(request, response);
     }
 
-    private Cookie parseJwt(HttpServletRequest request) {
+    private String parseJwt(HttpServletRequest request) {
         if (request.getCookies() != null) {
             Optional<Cookie> jwtCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("jwt")).findFirst();
             if (jwtCookie.isPresent()) {
-                return jwtCookie.get();
+                return jwtCookie.get().getValue();
             }
         }
         return null;

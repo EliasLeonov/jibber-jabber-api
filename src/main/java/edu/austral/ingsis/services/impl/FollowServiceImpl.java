@@ -1,5 +1,6 @@
 package edu.austral.ingsis.services.impl;
 
+import edu.austral.ingsis.domain.JJUser;
 import edu.austral.ingsis.domain.dto.follow.CreateFollowDto;
 import edu.austral.ingsis.domain.dto.follow.FollowDto;
 import edu.austral.ingsis.domain.dto.follow.UserFollowData;
@@ -14,6 +15,7 @@ import edu.austral.ingsis.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,9 +33,11 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public FollowDto follow(CreateFollowDto createFollowDto) {
-        if (repository.existsFollowByFollowerUserIdAndFollowingUserId(createFollowDto.getFollowerUserId(), createFollowDto.getFollowUserId()))
+        JJUser follower = userRepository.findById(createFollowDto.getFollowerUserId()).orElseThrow(() -> new NotFoundException("User not found"));
+        JJUser following = userRepository.findById(createFollowDto.getFollowingUserId()).orElseThrow(() -> new NotFoundException("User not found"));
+        if (repository.existsFollowByFollowerUserAndFollowingUser(follower, following))
             throw  new BadRequestException("Follow already exist");
-        return repository.save(FollowFactory.create(createFollowDto)).toDto();
+        return repository.save(FollowFactory.create(createFollowDto, follower, following)).toDto();
     }
 
     @Override
@@ -44,13 +48,14 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public Set<UserFollowData> getFollowers(Long userId) {
-        if (!repository.existsFollowByFollowerUserId(userId)) throw new BadRequestException("Follower does not exist");
+        JJUser jjUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
+
         return repository
-                .findAllByFollowingUserId(userId)
+                .findAllByFollowingUser(jjUser)
                 .stream()
-                .map(Follow::getFollowerUserId)
+                .map(Follow::getFollowerUser)
                 .map(x -> {
-                    var user = userRepository.findById(x).orElseThrow(() -> new NotFoundException("User does not found"));
+                    var user = userRepository.findById(x.getId()).orElseThrow(() -> new NotFoundException("User does not found"));
                     return UserFollowData.builder()
                             .firstname(user.getName())
                             .username(user.getUsername())
@@ -61,13 +66,13 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public Set<UserFollowData> getFollowing(Long userId) {
-        if (!repository.existsFollowByFollowingUserId(userId)) throw new BadRequestException("Following does not exist");
+        JJUser jjUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
         return repository
-                .findAllByFollowingUserId(userId)
+                .findAllByFollowingUser(jjUser)
                 .stream()
-                .map(Follow::getFollowingUserId)
+                .map(Follow::getFollowingUser)
                 .map(x -> {
-                    var user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User does not found"));
+                    var user = userRepository.findById(jjUser.getId()).orElseThrow(() -> new NotFoundException("User does not found"));
                     return UserFollowData.builder()
                             .firstname(user.getName())
                             .username(user.getUsername())
@@ -77,12 +82,12 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public Set<Long> getFollowingIds(Long userId) {
-        if (!repository.existsFollowByFollowingUserId(userId)) throw new BadRequestException("Following does not exist");
+    public Set<Long> getFollowingIds(JJUser user) {
         return repository
-                .findAllByFollowingUserId(userId)
+                .findAllByFollowingUser(user)
                 .stream()
-                .map(Follow::getFollowingUserId)
+                .map(Follow::getFollowingUser)
+                .map(JJUser::getId)
                 .collect(Collectors.toSet());
     }
 

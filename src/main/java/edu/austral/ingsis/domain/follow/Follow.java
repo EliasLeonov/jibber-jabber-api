@@ -1,5 +1,6 @@
 package edu.austral.ingsis.domain.follow;
 
+import edu.austral.ingsis.domain.JJUser;
 import edu.austral.ingsis.domain.dto.follow.FollowDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,15 +19,17 @@ public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long followingUserId;
-    private Long followerUserId;
+    @ManyToOne
+    private JJUser followingUser;
+    @ManyToOne
+    private JJUser followerUser;
 
     public FollowDto toDto(){
         return FollowDto
                 .builder()
                 .id(id)
-                .followingUserId(followingUserId)
-                .followerUserId(followerUserId)
+                .followingUserId(followingUser.getId())
+                .followerUserId(followerUser.getId())
                 .build();
     }
 
