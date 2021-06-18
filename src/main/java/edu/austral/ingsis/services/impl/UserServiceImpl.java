@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         Set<UserFollowData> followers = followService.getFollowers(user.getId());
         Set<UserFollowData> following = followService.getFollowing(user.getId());
         return UserPublicDataDto.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .firstname(user.getName())
                 .posts(posts)
@@ -82,6 +83,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         Set<UserFollowData> followers = followService.getFollowers(user.getId());
         Set<UserFollowData> following = followService.getFollowing(user.getId());
         return UserPrivateDataDto.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .firstname(user.getName())
                 .lastname(user.getLastname())

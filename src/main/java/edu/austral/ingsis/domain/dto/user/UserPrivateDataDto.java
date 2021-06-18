@@ -15,6 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class UserPrivateDataDto {
+    private Long id;
     private String username;
     private String firstname;
     private String lastname;
