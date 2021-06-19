@@ -30,7 +30,7 @@ public class JJUser implements UserDetails {
     private String username;
 
     @Column(updatable = false)
-    private String name;
+    private String firstname;
 
     @Column(updatable = false)
     private String lastname;
@@ -67,7 +67,7 @@ public class JJUser implements UserDetails {
         return JJUserDto.builder()
                 .id(id)
                 .username(username)
-                .firstname(name)
+                .firstname(firstname)
                 .lastname(lastname)
                 .mail(mail)
                 .build();
