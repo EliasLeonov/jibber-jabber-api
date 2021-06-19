@@ -32,7 +32,7 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public LikeDto like(CreateLikeDto likeDto) {
-        if (!repository.existsByPostIdAndUserId(likeDto.getPostId(),likeDto.getUserId()))
+        if (repository.existsByPostIdAndUserId(likeDto.getPostId(),likeDto.getUserId()))
             throw new BadRequestException("Like already exist");
         return repository.save(LikeFactory.createLike(likeDto)).toDto();
     }

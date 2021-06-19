@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/user-info")
@@ -37,6 +38,11 @@ public class UserController {
     @GetMapping("/user/{username}")
     public JJUserDto getUser(@PathVariable(name = "username") @Valid String username){
         return service.getByUsername(username);
+    }
+
+    @GetMapping("/users/get-all")
+    public Set<JJUserDto> getAllUsers(){
+        return service.getAll();
     }
 
 }

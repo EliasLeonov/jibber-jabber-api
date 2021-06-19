@@ -19,7 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -99,6 +101,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("User does not found"))
                 .toDto();
+    }
+
+    @Override
+    public Set<JJUserDto> getAll() {
+        return repository
+                .findAll()
+                .stream()
+                .map(JJUser::toDto)
+                .collect(Collectors.toSet());
     }
 
 
