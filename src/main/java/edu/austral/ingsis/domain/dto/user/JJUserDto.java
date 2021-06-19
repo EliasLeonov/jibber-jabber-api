@@ -15,7 +15,7 @@ import javax.persistence.Column;
 public class JJUserDto {
     private Long id;
     private String username;
-    private String name;
+    private String firstname;
     private String lastname;
     private String mail;
 }
