@@ -64,4 +64,9 @@ public class LikeServiceImpl implements LikeService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public Boolean existLikeOfPost(Long postId, Long userId) {
+        return repository.existsByPostIdAndUserId(postId, userId);
+    }
+
 }

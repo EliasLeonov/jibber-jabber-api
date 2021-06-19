@@ -18,6 +18,7 @@ public class PostDto {
     private String text;
     private Date timestamp;
     private Long likes;
+    private Boolean isLiked;
 }
 
 

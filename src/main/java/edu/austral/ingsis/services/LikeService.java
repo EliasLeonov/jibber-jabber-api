@@ -12,4 +12,5 @@ public interface LikeService {
     Boolean unlike(String id);
     Set<LikeDto> getAllLikeFromAPost(Long postId);
     Set<PostDto> getAllLikedPosts(Long userId);
+    Boolean existLikeOfPost(Long postId, Long userId);
 }

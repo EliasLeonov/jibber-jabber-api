@@ -94,6 +94,7 @@ public class PostServiceImpl implements PostService {
                 .flatMap(Set::stream)
                 .map(Post::toDto)
                 .peek(x -> x.setLikes((long) likeService.getAllLikeFromAPost(x.getId()).size()))
+                .peek(x -> x.setIsLiked(likeService.existLikeOfPost(x.getId(), user.getId())))
                 .collect(Collectors.toSet());
     }
 
