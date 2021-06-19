@@ -57,7 +57,7 @@ public class FollowServiceImpl implements FollowService {
                 .map(x -> {
                     var user = userRepository.findById(x.getId()).orElseThrow(() -> new NotFoundException("User does not found"));
                     return UserFollowData.builder()
-                            .firstname(user.getName())
+                            .firstname(user.getFirstname())
                             .username(user.getUsername())
                             .build();
                 })
@@ -74,7 +74,7 @@ public class FollowServiceImpl implements FollowService {
                 .map(x -> {
                     var user = userRepository.findById(jjUser.getId()).orElseThrow(() -> new NotFoundException("User does not found"));
                     return UserFollowData.builder()
-                            .firstname(user.getName())
+                            .firstname(user.getFirstname())
                             .username(user.getUsername())
                             .build();
                 })
