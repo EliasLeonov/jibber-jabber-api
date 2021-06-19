@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 @Entity
@@ -68,7 +67,7 @@ public class JJUser implements UserDetails {
         return JJUserDto.builder()
                 .id(id)
                 .username(username)
-                .name(name)
+                .firstname(name)
                 .lastname(lastname)
                 .mail(mail)
                 .build();
