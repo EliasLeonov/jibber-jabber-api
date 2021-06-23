@@ -11,11 +11,10 @@ import edu.austral.ingsis.factories.FollowFactory;
 import edu.austral.ingsis.repositories.FollowRepository;
 import edu.austral.ingsis.repositories.UserRepository;
 import edu.austral.ingsis.services.FollowService;
-import edu.austral.ingsis.services.UserService;
+import edu.austral.ingsis.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,11 +23,13 @@ public class FollowServiceImpl implements FollowService {
 
     private final FollowRepository repository;
     private final UserRepository userRepository;
+    private final SessionUtils sessionUtils;
 
     @Autowired
-    public FollowServiceImpl(FollowRepository repository, UserRepository userRepository) {
+    public FollowServiceImpl(FollowRepository repository, UserRepository userRepository, SessionUtils sessionUtils) {
         this.repository = repository;
         this.userRepository = userRepository;
+        this.sessionUtils = sessionUtils;
     }
 
     @Override
@@ -41,9 +42,11 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public Boolean unfollow(Long id) {
-        repository.deleteById(id);
-        return repository.existsById(id);
+    public Boolean unfollow(Long followingId) {
+        Long followerId = sessionUtils.getUserLogged().getId();
+        Follow follow = repository.findByFollowerUser_IdAndFollowingUser_Id(followerId, followingId).orElseThrow(() -> new NotFoundException("Follow not exist"));
+        repository.deleteById(follow.getId());
+        return repository.existsById(follow.getId());
     }
 
     @Override
@@ -89,6 +92,13 @@ public class FollowServiceImpl implements FollowService {
                 .map(Follow::getFollowingUser)
                 .map(JJUser::getId)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Boolean isFollowing(Long followingId){
+        JJUser follower = sessionUtils.getUserLogged();
+        JJUser following = userRepository.findById(followingId).orElseThrow(() -> new NotFoundException("User not found"));
+        return repository.existsFollowByFollowerUserAndFollowingUser(follower, following);
     }
 
 }

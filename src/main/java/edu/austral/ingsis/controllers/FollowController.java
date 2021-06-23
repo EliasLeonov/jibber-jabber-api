@@ -24,9 +24,9 @@ public class FollowController {
         return service.follow(followDto);
     }
 
-    @DeleteMapping("/unfollow/{id}")
-    public Boolean unfollow(@PathVariable(value = "id") @Valid Long id){
-        return service.unfollow(id);
+    @DeleteMapping("/unfollow/{following-id}")
+    public Boolean unfollow(@PathVariable(value = "following-id") @Valid Long followingId){
+        return service.unfollow(followingId);
     }
 
     @GetMapping("/get-followers/{userId}")
@@ -37,5 +37,10 @@ public class FollowController {
     @GetMapping("/get-following/{userId}")
     public Set<UserFollowData> getFollowing(@PathVariable(value = "userId") @Valid Long userId){
         return service.getFollowing(userId);
+    }
+
+    @GetMapping("/is-following/{following-id}")
+    public Boolean isFollowing(@PathVariable(value = "following-id") @Valid Long followingId){
+        return service.isFollowing(followingId);
     }
 }
