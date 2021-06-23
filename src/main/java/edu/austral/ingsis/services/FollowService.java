@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface FollowService {
-    FollowDto follow(CreateFollowDto createFollowDto);
+    FollowDto follow(Long userId);
     Boolean unfollow(Long id);
     Set<UserFollowData> getFollowers(Long userId);
     Set<UserFollowData> getFollowing(Long userId);

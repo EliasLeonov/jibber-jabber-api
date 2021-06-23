@@ -33,12 +33,13 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public FollowDto follow(CreateFollowDto createFollowDto) {
-        JJUser follower = userRepository.findById(createFollowDto.getFollowerUserId()).orElseThrow(() -> new NotFoundException("User not found"));
-        JJUser following = userRepository.findById(createFollowDto.getFollowingUserId()).orElseThrow(() -> new NotFoundException("User not found"));
+    public FollowDto follow(Long userId) {
+        Long followerId = sessionUtils.getUserLogged().getId();
+        JJUser follower = userRepository.findById(followerId).orElseThrow(() -> new NotFoundException("User not found"));
+        JJUser following = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
         if (repository.existsFollowByFollowerUserAndFollowingUser(follower, following))
             throw  new BadRequestException("Follow already exist");
-        return repository.save(FollowFactory.create(createFollowDto, follower, following)).toDto();
+        return repository.save(FollowFactory.create(follower, following)).toDto();
     }
 
     @Override

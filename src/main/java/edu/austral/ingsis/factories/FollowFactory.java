@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FollowFactory {
 
-    public static Follow create(CreateFollowDto followDto, JJUser follower, JJUser following){
+    public static Follow create(JJUser follower, JJUser following){
         return Follow
                 .builder()
                 .followerUser(follower)

@@ -19,9 +19,9 @@ public class FollowController {
         this.service = service;
     }
 
-    @PostMapping("/follow")
-    public FollowDto follow(@RequestBody @Valid CreateFollowDto followDto){
-        return service.follow(followDto);
+    @PostMapping("/follow/{userId}")
+    public FollowDto follow(@PathVariable(value = "userId") @Valid Long userId){
+        return service.follow(userId);
     }
 
     @DeleteMapping("/unfollow/{following-id}")
