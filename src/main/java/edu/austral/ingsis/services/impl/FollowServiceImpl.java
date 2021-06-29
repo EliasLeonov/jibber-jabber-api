@@ -102,4 +102,11 @@ public class FollowServiceImpl implements FollowService {
         return repository.existsFollowByFollowerUserAndFollowingUser(follower, following);
     }
 
+    public Set<JJUser> getFollowingUsers(JJUser user){
+        return repository
+                .findAllByFollowerUser(user)
+                .stream()
+                .map(Follow::getFollowingUser)
+                .collect(Collectors.toSet());
+    }
 }

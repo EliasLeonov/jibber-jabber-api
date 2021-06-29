@@ -80,23 +80,14 @@ public class PostServiceImpl implements PostService {
     @Override
     public Set<PostDto> getFeed() {
         JJUser user = sessionUtils.getUserLogged();
-        Set<Long> userIds = followService.getFollowingIds(user);
-        List<JJUser> users = userIds
+        Set<JJUser> followingIds = followService.getFollowingUsers(user);
+
+        Set<PostDto> postDtos = followingIds.stream().map(repository::findAllByOwner).flatMap(Set::stream).sorted().map(Post::toDto).collect(Collectors.toSet());
+        postDtos.addAll(getAllByUser(user.getUsername()));
+        return postDtos
                 .stream()
-                .map(x -> userRepository
-                        .findById(x)
-                        .orElseThrow(() -> new NotFoundException("User does not found")))
-                .collect(Collectors.toList());
-        users.add(user); //add ourself
-        return users
-                .stream()
-                .map(repository::findAllByOwner)
-                .flatMap(Set::stream)
-                .map(Post::toDto)
                 .peek(x -> x.setLikes((long) likeService.getAllLikeFromAPost(x.getId()).size()))
                 .peek(x -> x.setIsLiked(likeService.existLikeOfPost(x.getId(), user.getId())))
                 .collect(Collectors.toSet());
     }
-
-
 }

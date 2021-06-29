@@ -18,7 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post implements Comparator<Post> {
+public class Post implements Comparable<Post> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +43,13 @@ public class Post implements Comparator<Post> {
                 .build();
     }
 
+//    @Override
+//    public int compare(Post o1, Post o2) {
+//        return o1.getDate().compareTo(o2.getDate());
+//    }
+
     @Override
-    public int compare(Post o1, Post o2) {
-        return o1.getDate().compareTo(o2.getDate());
+    public int compareTo(Post o) {
+        return (int) (getDate().getSeconds() - o.getDate().getSeconds());
     }
 }

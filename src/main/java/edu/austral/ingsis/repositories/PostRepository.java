@@ -10,5 +10,5 @@ import java.util.Set;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    public Set<Post> findAllByOwner(JJUser owner);
+    Set<Post> findAllByOwner(JJUser owner);
 }

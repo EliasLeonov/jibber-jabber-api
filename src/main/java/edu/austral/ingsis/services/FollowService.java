@@ -15,4 +15,5 @@ public interface FollowService {
     Set<UserFollowData> getFollowing(Long userId);
     Set<Long> getFollowingIds(JJUser userId);
     Boolean isFollowing(Long followingId);
+    Set<JJUser> getFollowingUsers(JJUser user);
 }
