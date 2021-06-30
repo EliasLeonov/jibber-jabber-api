@@ -73,8 +73,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .username(user.getUsername())
                 .firstname(user.getFirstname())
                 .posts(posts)
-                .followers(followers)
-                .following(following)
+                .followers(following)
+                .following(followers)
                 .build();
     }
 

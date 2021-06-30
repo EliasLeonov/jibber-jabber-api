@@ -10,7 +10,7 @@ import edu.austral.ingsis.factories.LikeFactory;
 import edu.austral.ingsis.repositories.LikeRepository;
 import edu.austral.ingsis.repositories.PostRepository;
 import edu.austral.ingsis.services.LikeService;
-import edu.austral.ingsis.services.PostService;
+import edu.austral.ingsis.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +22,14 @@ public class LikeServiceImpl implements LikeService {
 
     private final LikeRepository repository;
     private final PostRepository postRepository;
+    private final SessionUtils sessionUtils;
 
 
     @Autowired
-    public LikeServiceImpl(LikeRepository repository, PostRepository postRepository) {
+    public LikeServiceImpl(LikeRepository repository, PostRepository postRepository, SessionUtils sessionUtils) {
         this.repository = repository;
         this.postRepository = postRepository;
+        this.sessionUtils = sessionUtils;
     }
 
     @Override
@@ -38,9 +40,10 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public Boolean unlike(Long id) {
-        repository.deleteById(id);
-        return repository.existsById(id);
+    public Boolean unlike(Long postId) {
+        Like entity = repository.findByPostIdAndUserId(postId, sessionUtils.getUserLogged().getId()).orElseThrow(() -> new NotFoundException("Like Entity not found"));
+        repository.delete(entity);
+        return repository.existsById(entity.getId());
     }
 
     @Override

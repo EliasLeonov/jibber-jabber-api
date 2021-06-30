@@ -24,9 +24,9 @@ public class LikeController {
         return service.like(likeDto);
     }
 
-    @DeleteMapping("/{id}")
-    public Boolean unlike(@PathVariable(value = "id") @Valid Long id){
-        return service.unlike(id);
+    @DeleteMapping("/{post-id}")
+    public Boolean unlike(@PathVariable(value = "post-id") @Valid Long postId){
+        return service.unlike(postId);
     }
 
     @GetMapping("/get-all-likes")
