@@ -83,11 +83,12 @@ public class PostServiceImpl implements PostService {
         Set<JJUser> followingIds = followService.getFollowingUsers(user);
 
         Set<PostDto> postDtos = followingIds.stream().map(repository::findAllByOwner).flatMap(Set::stream).sorted().map(Post::toDto).collect(Collectors.toSet());
-        postDtos.addAll(getAllByUser(user.getUsername()));
-        return postDtos
+        postDtos.addAll(getAllByUser(user.getUsername()).stream().sorted().collect(Collectors.toSet()));
+        postDtos = postDtos
                 .stream()
                 .peek(x -> x.setLikes((long) likeService.getAllLikeFromAPost(x.getId()).size()))
                 .peek(x -> x.setIsLiked(likeService.existLikeOfPost(x.getId(), user.getId())))
                 .collect(Collectors.toSet());
+        return postDtos;
     }
 }
