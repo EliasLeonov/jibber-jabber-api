@@ -25,7 +25,7 @@ public class LikeController {
     }
 
     @DeleteMapping("/{id}")
-    public Boolean unlike(@PathVariable(value = "id") @Valid String id){
+    public Boolean unlike(@PathVariable(value = "id") @Valid Long id){
         return service.unlike(id);
     }
 

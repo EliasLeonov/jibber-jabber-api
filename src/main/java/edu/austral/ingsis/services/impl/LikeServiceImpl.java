@@ -38,7 +38,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public Boolean unlike(String id) {
+    public Boolean unlike(Long id) {
         repository.deleteById(id);
         return repository.existsById(id);
     }
