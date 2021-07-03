@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/user-info/public-profile").permitAll()
+                .antMatchers("/user-info/public-profile/**").permitAll()
                 .antMatchers("/swagger-ui.html",
                         "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated();

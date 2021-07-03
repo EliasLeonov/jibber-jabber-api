@@ -7,6 +7,7 @@ import edu.austral.ingsis.domain.dto.user.JJUserDto;
 import edu.austral.ingsis.domain.dto.user.UserPrivateDataDto;
 import edu.austral.ingsis.domain.dto.user.UserPublicDataDto;
 import edu.austral.ingsis.exceptions.NotFoundException;
+import edu.austral.ingsis.repositories.FollowRepository;
 import edu.austral.ingsis.repositories.UserRepository;
 import edu.austral.ingsis.services.FollowService;
 import edu.austral.ingsis.services.PostService;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,6 +66,21 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserPublicDataDto getPublicData(String username){
         JJUser user = repository.findByUsername(username).orElseThrow(() -> new NotFoundException("User does not found"));
         Set<PostDto> posts = postService.getAllByUser(username);
+//        Set<UserFollowData> followers = followRepository
+//                .findAllByFollowingUser(user)
+//                .stream().map(Follow::getFollowerUser)
+//                .map(x -> UserFollowData.builder()
+//                        .firstname(x.getFirstname())
+//                        .username(x.getUsername())
+//                        .build())
+//                .collect(Collectors.toSet());//followService.getFollowing(user.getId());
+//
+//        Set<UserFollowData> following = followRepository
+//                .findAllByFollowerUser(user)
+//                .stream()
+//                .map(Follow::getFollowingUser)
+//                .map(x -> UserFollowData.builder().firstname(x.getFirstname()).username(x.getUsername()).build())
+//                .collect(Collectors.toSet());//followService.getFollowers(user.getId());
         Set<UserFollowData> followers = followService.getFollowers(user.getId());
         Set<UserFollowData> following = followService.getFollowing(user.getId());
         return UserPublicDataDto.builder()
@@ -84,7 +99,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         Set<PostDto> posts = postService.getAllByUser(user.getUsername());
         Set<UserFollowData> followers = followService.getFollowers(user.getId());
         Set<UserFollowData> following = followService.getFollowing(user.getId());
-        return UserPrivateDataDto.builder()
+        UserPrivateDataDto data = UserPrivateDataDto.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .firstname(user.getFirstname())
@@ -94,6 +109,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .followers(followers)
                 .following(following)
                 .build();
+        return data;
     }
 
     @Override

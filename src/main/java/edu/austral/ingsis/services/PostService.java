@@ -13,5 +13,4 @@ public interface PostService {
     Set<PostDto> getAll();
     Set<PostDto> getFeed();
     Set<PostDto> getAllByUser(String username);
-
-    }
+}

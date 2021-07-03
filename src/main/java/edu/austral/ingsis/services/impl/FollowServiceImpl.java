@@ -58,13 +58,11 @@ public class FollowServiceImpl implements FollowService {
                 .findAllByFollowingUser(jjUser)
                 .stream()
                 .map(Follow::getFollowerUser)
-                .map(x -> {
-                    var user = userRepository.findById(x.getId()).orElseThrow(() -> new NotFoundException("User does not found"));
-                    return UserFollowData.builder()
+                .map(user -> UserFollowData
+                            .builder()
                             .firstname(user.getFirstname())
                             .username(user.getUsername())
-                            .build();
-                })
+                            .build())
                 .collect(Collectors.toSet());
     }
 
@@ -72,16 +70,14 @@ public class FollowServiceImpl implements FollowService {
     public Set<UserFollowData> getFollowing(Long userId) {
         JJUser jjUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
         return repository
-                .findAllByFollowingUser(jjUser)
+                .findAllByFollowerUser(jjUser)
                 .stream()
                 .map(Follow::getFollowingUser)
-                .map(x -> {
-                    var user = userRepository.findById(jjUser.getId()).orElseThrow(() -> new NotFoundException("User does not found"));
-                    return UserFollowData.builder()
+                .map(user -> UserFollowData
+                            .builder()
                             .firstname(user.getFirstname())
                             .username(user.getUsername())
-                            .build();
-                })
+                            .build())
                 .collect(Collectors.toSet());
     }
 
@@ -102,4 +98,11 @@ public class FollowServiceImpl implements FollowService {
         return repository.existsFollowByFollowerUserAndFollowingUser(follower, following);
     }
 
+    public Set<JJUser> getFollowingUsers(JJUser user){
+        return repository
+                .findAllByFollowerUser(user)
+                .stream()
+                .map(Follow::getFollowingUser)
+                .collect(Collectors.toSet());
+    }
 }
