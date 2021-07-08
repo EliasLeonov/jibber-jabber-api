@@ -1,0 +1,32 @@
+name: Deploy Dev CI
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  azure-deploy:
+    needs: push
+    name: Deploy to Azure VM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connecting with SSH to Azure VM
+        uses: appleboy/ssh-action@master
+        env:
+          REPO_OWNER: ${{ secrets.DOCKERHUB_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.DOCKERHUB_PASS }}
+        with:
+          username: ${{ secrets.VM_USERNAME }}
+          host: ${{ secrets.VM_PUBLIC_IP_DEV }}
+          key: ${{ secrets.VM_SSH_PRIVATE_KEY_DEV }}
+          envs: DOCKERHUB_USERNAME, DOCKERHUB_PASS
+          script: |
+            cd Jibber-Jabber-Deploy
+            sudo git checkout dev
+            sudo git pull origin dev
+            sudo aa-remove-unknown
+            sudo docker container kill $(sudo docker ps -q)
+            sudo docker rm $(sudo docker ps -a -q)
+            sudo docker rmi $(sudo docker images -q)
+            sudo docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASS
+            sudo docker-compose -f docker-compose.dev.yml up -d --force-recreate --build
