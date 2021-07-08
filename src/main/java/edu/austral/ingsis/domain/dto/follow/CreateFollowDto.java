@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateFollowDto {
-    private String followUserId;
-    private String followerUserId;
+    private Long followingUserId;
+    private Long followerUserId;
 }

@@ -1,8 +1,8 @@
-name: Docker Publish CI
+name: Docker Publish Dev CI
 
 on:
   push:
-    branches: [ prod ]
+    branches: [ dev ]
 
 
 jobs:
@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/jib-jab-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/jib-jab-api:dev-latest
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

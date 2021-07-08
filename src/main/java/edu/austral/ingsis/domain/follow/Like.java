@@ -17,9 +17,9 @@ import javax.persistence.*;
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    private String postId;
-    private String userId;
+    private Long id;
+    private Long postId;
+    private Long userId;
 
     public LikeDto toDto(){
         return LikeDto
