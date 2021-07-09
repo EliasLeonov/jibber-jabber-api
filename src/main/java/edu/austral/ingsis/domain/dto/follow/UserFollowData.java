@@ -5,12 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class FollowDto {
-    private Long id;
-    private Long followingUserId;
-    private Long followerUserId;
+@AllArgsConstructor
+@Builder
+public class UserFollowData {
+    private String username;
+    private String firstname;
 }

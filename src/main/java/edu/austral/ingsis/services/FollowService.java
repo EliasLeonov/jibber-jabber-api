@@ -1,14 +1,19 @@
 package edu.austral.ingsis.services;
 
+import edu.austral.ingsis.domain.JJUser;
 import edu.austral.ingsis.domain.dto.follow.CreateFollowDto;
 import edu.austral.ingsis.domain.dto.follow.FollowDto;
+import edu.austral.ingsis.domain.dto.follow.UserFollowData;
 
 import java.util.List;
+import java.util.Set;
 
 public interface FollowService {
-    FollowDto follow(CreateFollowDto createFollowDto);
-    Boolean unfollow(String id);
-    List<String> getFollowers(String userId);
-    List<String> getFollowing(String userId);
-
+    FollowDto follow(Long userId);
+    Boolean unfollow(Long id);
+    Set<UserFollowData> getFollowers(Long userId);
+    Set<UserFollowData> getFollowing(Long userId);
+    Set<Long> getFollowingIds(JJUser userId);
+    Boolean isFollowing(Long followingId);
+    Set<JJUser> getFollowingUsers(JJUser user);
 }
