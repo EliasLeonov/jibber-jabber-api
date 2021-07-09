@@ -66,21 +66,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserPublicDataDto getPublicData(String username){
         JJUser user = repository.findByUsername(username).orElseThrow(() -> new NotFoundException("User does not found"));
         Set<PostDto> posts = postService.getAllByUser(username);
-//        Set<UserFollowData> followers = followRepository
-//                .findAllByFollowingUser(user)
-//                .stream().map(Follow::getFollowerUser)
-//                .map(x -> UserFollowData.builder()
-//                        .firstname(x.getFirstname())
-//                        .username(x.getUsername())
-//                        .build())
-//                .collect(Collectors.toSet());//followService.getFollowing(user.getId());
-//
-//        Set<UserFollowData> following = followRepository
-//                .findAllByFollowerUser(user)
-//                .stream()
-//                .map(Follow::getFollowingUser)
-//                .map(x -> UserFollowData.builder().firstname(x.getFirstname()).username(x.getUsername()).build())
-//                .collect(Collectors.toSet());//followService.getFollowers(user.getId());
         Set<UserFollowData> followers = followService.getFollowers(user.getId());
         Set<UserFollowData> following = followService.getFollowing(user.getId());
         return UserPublicDataDto.builder()
