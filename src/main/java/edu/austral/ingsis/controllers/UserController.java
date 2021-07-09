@@ -40,6 +40,11 @@ public class UserController {
         return service.getByUsername(username);
     }
 
+    @GetMapping("/user/by-id/{userId}")
+    public JJUserDto getUser(@PathVariable(name = "userId") @Valid long userId){
+        return service.getById(userId).toDto();
+    }
+
     @GetMapping("/users/get-all")
     public Set<JJUserDto> getAllUsers(){
         return service.getAll();
