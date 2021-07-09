@@ -69,13 +69,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Set<PostDto> getAllByUser(String username){
+        JJUser userLogged = sessionUtils.getUserLogged();
         JJUser user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User not found"));
         return repository
                 .findAllByOwner(user)
                 .stream()
                 .map(Post::toDto)
                 .peek(x -> x.setLikes((long) likeService.getAllLikeFromAPost(x.getId()).size()))
-                .peek(x -> x.setIsLiked(likeService.existLikeOfPost(x.getId(), user.getId())))
+                .peek(x -> x.setIsLiked(likeService.existLikeOfPost(x.getId(), userLogged.getId())))
                 .collect(Collectors.toSet());
     }
 
